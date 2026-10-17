@@ -49,7 +49,7 @@ python graficar.py resultados/experimentos.csv
 - **q0**: probabilidad de elegir directamente la mejor ciudad en vez de sortear (se usó 0.9).
 - **rho**: evaporación de la feromona, tanto en la actualización local como en la global. Está fija en 0.1 dentro del código y no se pasa por consola.
 
-Una duda que quedó: la hoja de parámetros del profesor dice "alfa = 0.1" como factor de evaporación, pero el ejemplo del enunciado usa `1.0 2.0 0.9` para alfa, beta y q0. Para que ambas cosas calcen, se interpretó alfa como el exponente de la feromona (1.0, como en el ejemplo) y la evaporación se separó como rho = 0.1. Con alfa = 1.0 la regla queda igual a la de ACS original. Habría que confirmar con el profesor si era esto lo que se quería.
+Una duda que quedó: la hoja de parámetros dice "alfa = 0.1" como factor de evaporación, pero el ejemplo del enunciado usa `1.0 2.0 0.9` para alfa, beta y q0. Para que ambas cosas coincidan, interpretamos alfa como el exponente de la feromona
 
 Otros detalles de la implementación:
 
@@ -61,11 +61,9 @@ Otros detalles de la implementación:
 
 Por cada iteración se guarda una fila con: instancia, semilla, número de hormigas, iteraciones, alfa, beta, q0, rho, iteración, costo de esa iteración, mejor costo hasta el momento, tiempo transcurrido y la mejor ruta (ciudades numeradas desde 1). Si el archivo ya existe, se agregan filas al final sin repetir el encabezado.
 
-Un detalle: si se abre el CSV con Excel en configuración chilena, los decimales con punto se leen mal. El archivo está bien, es un problema de Excel. Conviene abrirlo con pandas.
-
 ## Pruebas
 
-`tests.py` revisa cinco cosas: que la instancia se lea bien (52 ciudades), que las rutas generadas sean permutaciones válidas, que el costo de una ruta se calcule bien (con un rectángulo de costo conocido y con el tour óptimo de Berlin52, que da cerca de 7544.37), que las feromonas se inicialicen y actualicen correctamente, y que la mejor solución nunca empeore. Las cinco pasan.
+`tests.py` revisa cinco cosas: que la instancia se lea bien (52 ciudades), que las rutas generadas sean permutaciones válidas, que el costo de una ruta se calcule bien, que las feromonas se inicialicen y actualicen correctamente, y que la mejor solución nunca empeore
 
 ## Experimentos
 
@@ -89,19 +87,18 @@ Promedio del mejor costo con 10 semillas (el mejor valor posible es 7544.37):
 | q0 0.8 | 7694 | 1.63 |
 | q0 0.95 | 7715 | 1.31 |
 
-Los tiempos dependen del computador en que se corrió, así que sirven más que nada para comparar entre configuraciones.
 
-Lo que se puede concluir, con cuidado:
+Conclusiones
 
-- **Hormigas**: con muy pocas (10) los resultados son peores. Desde 30 en adelante casi no mejora, pero el tiempo sube casi en proporción. Más hormigas no se justifica.
-- **Iteraciones**: pasar de 200 a 500 mejora muy poco y el tiempo se duplica.
-- **Parámetros de ACS**: lo que claramente empeora es un alfa alto (2.0) y un q0 bajo (0.5), que explora demasiado y además es más lento. Entre q0 0.8 y 0.95 no hay diferencia clara. Beta más alto (3.5 y 5.0) dio mejores promedios y menos dispersión, pero la diferencia no es tan grande frente al ruido, así que es una pista y no una conclusión firme.
-- **Semillas**: el resultado cambia bastante de una semilla a otra (desviación entre 90 y 260 según la configuración). Varias semillas llegan al óptimo 7544.37, pero el promedio queda unos 150 puntos más arriba. Por eso no basta con una sola corrida.
-- **Calidad y tiempo**: hay una relación, pero con retornos decrecientes. Gastar el doble de tiempo no mejora el doble.
+- Hormigas: con muy pocas (10) los resultados son peores. Desde 30 en adelante casi no mejora, pero el tiempo sube casi en proporción. Más hormigas no se justifican.
+- Iteraciones: pasar de 200 a 500 mejora muy poco y el tiempo se duplica.
+- Parámetros de ACS: lo que claramente empeora es un alfa alto (2.0) y un q0 bajo (0.5), que explora demasiado y además es más lento. Entre q0 0.8 y 0.95 no hay diferencia clara. Beta más alto (3.5 y 5.0) dio mejores promedios y menos dispersión, pero la diferencia no es tan grande frente al ruido, así que es una pista y no una conclusión tan sólida.
+- Semillas: el resultado cambia bastante de una semilla a otra (desviación entre 90 y 260 según la configuración). Varias semillas llegan al óptimo 7544.37, pero el promedio queda unos 150 puntos más arriba. Por eso no basta con correrla una sola vez.
+- Calidad y tiempo: hay una relación clara y es que gastar el doble de tiempo no mejora el doble.
 
 Limitaciones: se usaron solo 10 semillas por configuración, así que las diferencias pequeñas (menos de unos 100 puntos) no se pueden distinguir del azar. Además solo se probó Berlin52 y se cambió un parámetro a la vez, sin probar combinaciones.
 
-## Transferencia al PFSP
+Transferencia al PFSP
 
 **1. ¿Qué partes de acs.py se podrían mantener?**
 Casi todo. El ciclo (inicializar, construir soluciones, evaluar, actualizar feromonas, actualizar la mejor, repetir), la lectura de parámetros, la semilla, el historial con el tiempo y la escritura del CSV. Lo único que cambia es la lectura de la instancia y el cálculo de tau0.
