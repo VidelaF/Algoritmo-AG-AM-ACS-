@@ -88,7 +88,7 @@ Promedio del mejor costo con 10 semillas (el mejor valor posible es 7544.37):
 | q0 0.95 | 7715 | 1.31 |
 
 
-Conclusiones
+## Conclusiones
 
 - Hormigas: con muy pocas (10) los resultados son peores. Desde 30 en adelante casi no mejora, pero el tiempo sube casi en proporción. Más hormigas no se justifican.
 - Iteraciones: pasar de 200 a 500 mejora muy poco y el tiempo se duplica.
@@ -98,7 +98,7 @@ Conclusiones
 
 Limitaciones: se usaron solo 10 semillas por configuración, así que las diferencias pequeñas (menos de unos 100 puntos) no se pueden distinguir del azar. Además solo se probó Berlin52 y se cambió un parámetro a la vez, sin probar combinaciones.
 
-Transferencia al PFSP
+## Transferencia al PFSP
 
 **1. ¿Qué partes de acs.py se podrían mantener?**
 Casi todo. El ciclo (inicializar, construir soluciones, evaluar, actualizar feromonas, actualizar la mejor, repetir), la lectura de parámetros, la semilla, el historial con el tiempo y la escritura del CSV. Lo único que cambia es la lectura de la instancia y el cálculo de tau0.
