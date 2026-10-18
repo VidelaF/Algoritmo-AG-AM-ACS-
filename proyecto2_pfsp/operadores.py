@@ -179,6 +179,18 @@ def generar_nueva_poblacion(poblacion, fitnesses, tiempos, prob_cruce, prob_muta
     return nueva, fitnesses_nueva
 
 
+def seleccionar_mejores_distintos(poblacion, fitnesses, cantidad):
+    """Índices de los mejores individuos, sin repetir secuencias iguales."""
+    orden = sorted(range(len(poblacion)), key=lambda i: fitnesses[i])
+    elegidos = []
+    for indice in orden:
+        if all(poblacion[indice] != poblacion[otro] for otro in elegidos):
+            elegidos.append(indice)
+        if len(elegidos) == cantidad:
+            break
+    return elegidos
+
+
 def busqueda_local_insercion(individuo, tiempos):
     """Mueve trabajos a otra posición y acepta la primera mejora. Termina sin mejoras."""
     mejor = list(individuo)

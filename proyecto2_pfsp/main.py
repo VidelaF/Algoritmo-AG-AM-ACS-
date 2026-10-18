@@ -1,4 +1,4 @@
-"""Corre AG, AM y ACS sobre las instancias de prueba con varias semillas y guarda todo en un CSV."""
+#Corre AG, AM y ACS sobre las instancias de prueba con varias semillas y guarda todo en un CSV
 import os
 import sys
 
@@ -15,7 +15,7 @@ USO = ("Uso: python main.py num_semillas archivo_salida\n"
 
 INSTANCIAS = ["datos/ta001.txt", "datos/ta041.txt", "datos/ta071.txt"]
 
-# parámetros iguales para todas las instancias
+#parámetros iguales para todas las instancias
 POBLACION = 50
 ITERACIONES = 200
 PC = 0.8

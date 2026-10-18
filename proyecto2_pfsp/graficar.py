@@ -1,4 +1,4 @@
-"""Genera la tabla resumen y los gráficos a partir del CSV de main.py."""
+#Genera la tabla resumen y los gráficos a partir del CSV de main.py
 import os
 import sys
 
@@ -27,7 +27,7 @@ def estilo_ejes(ax):
 
 
 def crear_resumen(datos):
-    """Resumen por instancia y algoritmo con el resultado final de cada corrida."""
+    #Resumen por instancia y algoritmo con el resultado final de cada corrida
     finales = datos.sort_values("iteracion").groupby(["algoritmo", "instancia", "semilla"]).last().reset_index()
     resumen = finales.groupby(["instancia", "algoritmo"]).agg(
         corridas=("semilla", "count"),
@@ -44,7 +44,7 @@ def crear_resumen(datos):
 
 
 def graficar_convergencia(datos, instancias):
-    """RPD promedio por iteración, un gráfico por instancia."""
+    #RPD promedio por iteración, un gráfico por instancia
     fig, ejes = plt.subplots(1, len(instancias), figsize=(4.2 * len(instancias), 3.6), sharey=False)
     for ax, instancia in zip(ejes, instancias):
         sub = datos[datos["instancia"] == instancia]
@@ -62,7 +62,7 @@ def graficar_convergencia(datos, instancias):
 
 
 def graficar_barras(resumen, instancias, columna, etiqueta, archivo, escala_log=False):
-    """Barras agrupadas por instancia con el valor sobre cada barra."""
+    #Barras agrupadas por instancia con el valor sobre cada barra
     fig, ax = plt.subplots(figsize=(7, 3.8))
     ancho = 0.26
     for k, algoritmo in enumerate(ALGORITMOS):

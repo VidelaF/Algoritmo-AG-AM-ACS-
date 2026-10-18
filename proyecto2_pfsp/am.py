@@ -1,4 +1,4 @@
-"""Algoritmo Memético para PFSP. Es el AG con búsqueda local sobre el mejor individuo."""
+"""Algoritmo Memético para PFSP. Es el AG con búsqueda local sobre los mejores individuos."""
 import random
 import sys
 import time
@@ -6,8 +6,12 @@ import time
 from operadores import (
     leer_parametros, validar_instancia, salir_con_error, leer_instancia,
     inicializar_poblacion, evaluar_secuencias, obtener_mejor, generar_nueva_poblacion,
-    busqueda_local_insercion, calcular_makespan, reportar_y_guardar,
+    seleccionar_mejores_distintos, busqueda_local_insercion, calcular_makespan,
+    reportar_y_guardar,
 )
+
+# cantidad de individuos a los que se les aplica la búsqueda local
+MEJORES = 3
 
 USO = ("Uso: python am.py instancia semilla poblacion iteraciones pc pm frecuencia_bl archivo_salida\n"
        "Ejemplo: python am.py datos/ta001.txt 12345 50 200 0.8 0.1 10 resultados/res_am.csv")
@@ -30,9 +34,9 @@ def ejecutar_am(tiempos, semilla, tam_poblacion, iteraciones, prob_cruce, prob_m
 
         # búsqueda local cada frecuencia_bl iteraciones
         if iteracion % frecuencia_bl == 0:
-            indice = fitnesses.index(min(fitnesses))
-            poblacion[indice] = busqueda_local_insercion(poblacion[indice], tiempos)
-            fitnesses[indice] = calcular_makespan(poblacion[indice], tiempos)
+            for indice in seleccionar_mejores_distintos(poblacion, fitnesses, MEJORES):
+                poblacion[indice] = busqueda_local_insercion(poblacion[indice], tiempos)
+                fitnesses[indice] = calcular_makespan(poblacion[indice], tiempos)
 
         secuencia, cmax = obtener_mejor(poblacion, fitnesses)
         if cmax < mejor_cmax:

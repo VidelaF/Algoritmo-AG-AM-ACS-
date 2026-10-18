@@ -1,4 +1,4 @@
-"""Algoritmo Genético para PFSP."""
+#Algoritmo Genético para PFSP.
 import random
 import sys
 import time
@@ -14,7 +14,7 @@ USO = ("Uso: python ag.py instancia semilla poblacion iteraciones pc pm archivo_
 
 
 def ejecutar_ag(tiempos, semilla, tam_poblacion, iteraciones, prob_cruce, prob_mutacion):
-    """Devuelve la mejor secuencia, su cmax y el historial."""
+    #Devuelve la mejor secuencia, su cmax y el historial.
     random.seed(semilla)
     inicio = time.process_time()
 

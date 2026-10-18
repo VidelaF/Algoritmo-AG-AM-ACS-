@@ -1,4 +1,4 @@
-"""Ant Colony System para PFSP. La visibilidad usa la regla SPT."""
+#Ant Colony System para PFSP. La visibilidad usa la regla SPT.
 import random
 import sys
 import time
@@ -14,11 +14,11 @@ USO = ("Uso: python acs.py instancia semilla hormigas iteraciones evaporacion be
 
 
 def ejecutar_acs(tiempos, semilla, num_hormigas, iteraciones, evaporacion, beta, q0):
-    """Devuelve la mejor secuencia, su cmax y el historial."""
+    #Devuelve la mejor secuencia, su cmax y el historial
     random.seed(semilla)
     inicio = time.process_time()
 
-    # inicializar
+    #inicializar
     n_trabajos = len(tiempos[0])
     eta_beta = calcular_heuristica(tiempos, beta)
     tau0 = calcular_tau0(tiempos)
@@ -28,20 +28,20 @@ def ejecutar_acs(tiempos, semilla, num_hormigas, iteraciones, evaporacion, beta,
     historial = []
 
     for iteracion in range(1, iteraciones + 1):
-        # construir soluciones, la evaporación local ocurre mientras avanzan
+        #construir soluciones, la evaporación local ocurre mientras avanzan
         secuencias = [construir_secuencia(tau, eta_beta, tau0, q0, evaporacion)
                       for _ in range(num_hormigas)]
 
-        # evaluar soluciones
+        #evaluar soluciones
         costos = evaluar_secuencias(secuencias, tiempos)
 
-        # actualizar mejor solución
+        #actualizar mejor solución
         indice = costos.index(min(costos))
         if costos[indice] < mejor_cmax:
             mejor_secuencia = secuencias[indice]
             mejor_cmax = costos[indice]
 
-        # actualizar feromonas con la mejor solución
+        #actualizar feromonas con la mejor solución
         actualizar_feromona_global(tau, mejor_secuencia, mejor_cmax, evaporacion)
 
         historial.append((iteracion, mejor_cmax, time.process_time() - inicio))
